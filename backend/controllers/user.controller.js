@@ -22,17 +22,6 @@ export const getUserById = async (req, res) => {
   }
 };
 
-export const createUser = async (req, res) => {
-  try {
-    const { username, password, email, role } = req.body;
-    const newUser = new user({ username, password, email, role });
-    await newUser.save();
-    res.status(201).json({ message: "User created successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 export const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;

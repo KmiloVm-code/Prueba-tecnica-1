@@ -2,9 +2,15 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRoutes from "./routes/user.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+import { verifyToken } from "./middleware/verifyToken.js";
+import cookieParser from "cookie-parser";
+
+const app = express();
+
+app.use(cookieParser());
 
 dotenv.config();
-const app = express();
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB"))
@@ -18,7 +24,8 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", verifyToken, userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
