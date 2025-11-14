@@ -1,0 +1,56 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1>Dashboard</h1>
+      <div class="user-info">
+        <div *ngIf="isLoadingUser" class="loading">Cargando...</div>
+        <div *ngIf="!isLoadingUser && currentUser" class="current-user">
+          <span class="user-name">{{ currentUser.username }}</span>
+          <span class="user-email">{{ currentUser.email }}</span>
+        </div>
+        <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="users-section">
+      <h2>Lista de Usuarios</h2>
+      
+      <div *ngIf="isLoadingUsers" class="loading-table">
+        Cargando usuarios...
+      </div>
+
+      <div *ngIf="!isLoadingUsers && users.length > 0" class="table-container">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Fecha de Creación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user._id }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="role-badge" [class.admin]="user.role === 'admin'">
+                  {{ user.role || 'user' }}
+                </span>
+              </td>
+              <td>{{ user.createdAt | date:'short' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="!isLoadingUsers && users.length === 0" class="no-data">
+        No hay usuarios registrados
+      </div>
+    </div>
+  </main>
+</div>
